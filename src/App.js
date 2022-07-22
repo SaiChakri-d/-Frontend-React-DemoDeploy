@@ -40,7 +40,7 @@ function App() {
         } else {
           delete values._id;
           await axios.put(
-            `https://node-express-demo-deployment.herokuapp.com/student${editUser._id}`,
+            `https://node-express-demo-deployment.herokuapp.com/student/${editUser._id}`,
             values
           );
           setIsEdit(false);
@@ -55,7 +55,7 @@ function App() {
   let handleEdit = async (id) => {
     try {
       let student = await axios.get(
-        `https://node-express-demo-deployment.herokuapp.com/student${id}`
+        `https://node-express-demo-deployment.herokuapp.com/student/${id}`
       );
       formik.setValues(student.data);
       setEditUser(student.data);
@@ -66,7 +66,7 @@ function App() {
   let handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://node-express-demo-deployment.herokuapp.com/student${id}`
+        `https://node-express-demo-deployment.herokuapp.com/student/${id}`
       );
       fetchData();
     } catch (error) {
