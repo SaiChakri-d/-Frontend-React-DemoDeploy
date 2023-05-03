@@ -2,19 +2,22 @@ import React from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { config } from "./config";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [users, setUser] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [editUser, setEditUser] = useState({});
+  const navigate = useNavigate();
   let fetchData = async () => {
     try {
-      let res = await axios.get(
-        "https://node-express-demo-deployment.herokuapp.com/students"
-      );
-      setUser(res.data).catch((err) => {
-        console.log(err);
+      let res = await axios.get(`${config.api}/students`, {
+        headers: {
+          Authorization: `${localStorage.getItem("react_app_token")}`,
+        },
       });
+      setUser(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -32,17 +35,19 @@ function Dashboard() {
     onSubmit: async (values) => {
       try {
         if (!isEdit) {
-          await axios.post(
-            "https://node-express-demo-deployment.herokuapp.com/student",
-            values
-          );
+          await axios.post(`${config.api}/student`, values, {
+            headers: {
+              Authorization: `${localStorage.getItem("react_app_token")}`,
+            },
+          });
           fetchData();
         } else {
           delete values._id;
-          await axios.put(
-            `https://node-express-demo-deployment.herokuapp.com/student/${editUser._id}`,
-            values
-          );
+          await axios.put(`${config.api}/student/${editUser._id}`, values, {
+            headers: {
+              Authorization: `${localStorage.getItem("react_app_token")}`,
+            },
+          });
           setIsEdit(false);
           fetchData();
         }
@@ -54,9 +59,11 @@ function Dashboard() {
 
   let handleEdit = async (id) => {
     try {
-      let student = await axios.get(
-        `https://node-express-demo-deployment.herokuapp.com/student/${id}`
-      );
+      let student = await axios.get(`${config.api}/student/${id}`, {
+        headers: {
+          Authorization: `${localStorage.getItem("react_app_token")}`,
+        },
+      });
       formik.setValues(student.data);
       setEditUser(student.data);
     } catch (error) {
@@ -65,19 +72,29 @@ function Dashboard() {
   };
   let handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `https://node-express-demo-deployment.herokuapp.com/student/${id}`
-      );
+      await axios.delete(`${config.api}/student/${id}`, {
+        headers: {
+          Authorization: `${localStorage.getItem("react_app_token")}`,
+        },
+      });
       fetchData();
     } catch (error) {
       console.log(error);
     }
   };
 
+  let doLogout = () => {
+    localStorage.removeItem("react_app_token");
+    navigate("/");
+  };
+
   return (
     <>
       <div className="container">
         <div className="row">
+          <div className="col-lg-12">
+            <button onClick={doLogout}>logout</button>
+          </div>
           <div className="col-lg-6">
             <form onSubmit={formik.handleSubmit}>
               <div className="col-lg-12">
@@ -112,8 +129,8 @@ function Dashboard() {
             </form>
           </div>
           <div className="col-lg-6">
-            <table class="table">
-              <thead class="thead-dark">
+            <table className="table">
+              <thead className="thead-dark">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Username</th>
