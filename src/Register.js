@@ -59,9 +59,6 @@ function Register() {
               />
             </div>
             <div className="col-lg-12 mt-2">
-              {/* <Link to={"/dashboard"}>
-              <input type={"submit"} className={"btn btn-primary"} />
-            </Link> */}
               <input className="btn btn-primary" type="submit" value="Submit" />
             </div>
             <p>

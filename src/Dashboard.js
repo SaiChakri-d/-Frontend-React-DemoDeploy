@@ -40,6 +40,7 @@ function Dashboard() {
               Authorization: `${localStorage.getItem("react_app_token")}`,
             },
           });
+
           fetchData();
         } else {
           delete values._id;
@@ -48,6 +49,7 @@ function Dashboard() {
               Authorization: `${localStorage.getItem("react_app_token")}`,
             },
           });
+
           setIsEdit(false);
           fetchData();
         }
@@ -64,6 +66,7 @@ function Dashboard() {
           Authorization: `${localStorage.getItem("react_app_token")}`,
         },
       });
+
       formik.setValues(student.data);
       setEditUser(student.data);
     } catch (error) {
@@ -77,6 +80,7 @@ function Dashboard() {
           Authorization: `${localStorage.getItem("react_app_token")}`,
         },
       });
+
       fetchData();
     } catch (error) {
       console.log(error);
