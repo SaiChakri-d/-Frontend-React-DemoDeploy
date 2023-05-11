@@ -1,4 +1,4 @@
 export const config = {
   // api: "http://localhost:3001"
-  api: "node-express-demo-deploy.up.railway.app",
+  api: "https://node-express-demo-deploy.up.railway.app",
 };
